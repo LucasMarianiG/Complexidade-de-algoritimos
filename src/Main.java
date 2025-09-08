@@ -1,3 +1,4 @@
+//Ponto de entrada do programa. Cria a lista (ordenada ou não), instancia Alunos, executa operações e imprime resultados para testar o comportamento.
 public class Main {
     public static void main(String[] args) {
         ListaEncadeada<Aluno> lMatri = new ListaEncadeada<Aluno>(true, new CompararAlunoMatricula());
@@ -10,3 +11,4 @@ public class Main {
 
     }
 }
+

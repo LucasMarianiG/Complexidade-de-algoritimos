@@ -1,3 +1,4 @@
+// Modelo de dados usado nos testes. Guarda nome e matrícula, define toString() (para imprimir) e equals() (igualdade por matrícula). Serve de elemento armazenado na lista
 public class Aluno {
     private String nome;
     private int matricula;

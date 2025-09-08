@@ -1,3 +1,4 @@
+// Implementa Comparator<Aluno> para definir a ordem dos alunos pela matrícula (ordenação crescente). É a “regra de comparação” usada pela lista ordenada.
 import java.util.Comparator;
 
 public class CompararAlunoMatricula implements Comparator<Aluno> {

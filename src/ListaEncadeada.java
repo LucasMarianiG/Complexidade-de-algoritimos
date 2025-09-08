@@ -1,3 +1,5 @@
+// Estrutura de dados principal. Mantém ponteiros para primeiro e último nós, a quantidade de elementos e, opcionalmente, um Comparator quando a lista é ordenada.
+
 import java.util.Comparator;
 
 public class ListaEncadeada<T> {
@@ -15,7 +17,7 @@ public class ListaEncadeada<T> {
 
     }
 
-
+//delega para inserção no fim (não ordenada) ou na posição correta (ordenada)
     public void adicionar(T novoValor) {
         if (!this.ordenada)
             addForaOrd(novoValor);
@@ -67,6 +69,7 @@ public class ListaEncadeada<T> {
 
     }
 
+//busca sequencial (com “parada antecipada” se ordenada)
     public boolean ContemElemento(T valor) {
         No<T> aux = this.prim;
         while (aux != null) {
@@ -82,7 +85,7 @@ public class ListaEncadeada<T> {
         return false;
     }
 
-
+//remove o primeiro nó que corresponde ao valor
     public boolean remover(T valor) {
         No<T> aux = this.prim;
         No<T> ant = null;
@@ -111,6 +114,7 @@ public class ListaEncadeada<T> {
         return false;
     }
 
+    //representação dos elementos na ordem atual
     @Override
     public String toString() {
         No<T> aux = this.prim;
@@ -124,4 +128,33 @@ public class ListaEncadeada<T> {
         }
         return (s + "]");
     }
+
+    public T pesquisar(T valor) {
+        No<T> aux = this.prim;
+
+        while (aux != null) {
+            if (this.cmp != null) {
+                int c = this.cmp.compare(aux.getValor(), valor);
+                if (c == 0) {
+                    // achou: retorna a instância armazenada
+                    return aux.getValor();
+                }
+                if (this.ordenada && c > 0) {
+                    // como já passou do ponto na lista ordenada, não existe
+                    return null;
+                }
+            } else {
+                // lista não ordenada (sem comparator): use equals
+                T atual = aux.getValor();
+                if (atual == null ? valor == null : atual.equals(valor)) {
+                    return atual; // retorna a instância armazenada
+                }
+            }
+            aux = aux.getProx();
+        }
+        return null; // não achou
+    }
+
 }
+
+
