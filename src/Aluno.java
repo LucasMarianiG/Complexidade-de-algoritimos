@@ -1,14 +1,12 @@
 // Modelo de dados usado nos testes. Guarda nome e matrícula, define toString() (para imprimir) e equals() (igualdade por matrícula). Serve de elemento armazenado na lista
 public class Aluno {
-    private String nome;
     private int matricula;
+    private String nome;
 
-    public Aluno(String nom, int mat) {
-        this.nome = nom;
+    public Aluno(int mat, String nom) {
         this.matricula = mat;
+        this.nome = nom;
     }
-
-
 
     @Override
     public String toString() {

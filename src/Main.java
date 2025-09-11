@@ -2,8 +2,8 @@
 public class Main {
     public static void main(String[] args) {
         ListaEncadeada<Aluno> lMatri = new ListaEncadeada<Aluno>(true, new CompararAlunoMatricula());
-        Aluno a1 = new Aluno ("Ze",1);
-        Aluno a2 = new Aluno ("Ma",2);
+        Aluno a1 = new Aluno(1, "Ze");
+        Aluno a2 = new Aluno(2, "Ma");
 
         lMatri.adicionar(a1);
         lMatri.adicionar(a2);
@@ -11,4 +11,3 @@ public class Main {
 
     }
 }
-
