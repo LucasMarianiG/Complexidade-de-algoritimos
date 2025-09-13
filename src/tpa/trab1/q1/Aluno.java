@@ -1,3 +1,5 @@
+package tpa.trab1.q1;
+
 // Modelo de dados usado nos testes. Guarda nome e matrícula, define toString() (para imprimir) e equals() (igualdade por matrícula). Serve de elemento armazenado na lista
 public class Aluno {
     private int matricula;

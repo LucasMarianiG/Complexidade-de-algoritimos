@@ -1,3 +1,7 @@
+package tpa.trab1.q4;
+
+import tpa.trab1.q1.Aluno;
+
 public class MainArquivo {
     public static void main(String[] args) {
         try {

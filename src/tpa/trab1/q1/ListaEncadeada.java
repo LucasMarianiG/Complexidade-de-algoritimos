@@ -1,7 +1,8 @@
-// Estrutura de dados principal. Mantém ponteiros para primeiro e último nós, a quantidade de elementos e, opcionalmente, um Comparator quando a lista é ordenada.
+package tpa.trab1.q1;
 
 import java.util.Comparator;
 
+// Estrutura de dados principal. Mantém ponteiros para primeiro e último nós, a quantidade de elementos e, opcionalmente, um Comparator quando a lista é ordenada.
 public class ListaEncadeada<T> {
 
     private No<T> prim, ult;

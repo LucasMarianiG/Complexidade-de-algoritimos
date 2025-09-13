@@ -1,3 +1,7 @@
+package tpa.trab1.q4;
+
+import tpa.trab1.q1.Aluno;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

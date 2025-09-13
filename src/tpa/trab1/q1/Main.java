@@ -1,3 +1,5 @@
+package tpa.trab1.q1;
+
 //Ponto de entrada do programa. Cria a lista (ordenada ou não), instancia Alunos, executa operações e imprime resultados para testar o comportamento.
 public class Main {
     public static void main(String[] args) {
