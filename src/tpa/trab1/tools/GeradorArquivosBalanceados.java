@@ -1,4 +1,4 @@
-package tpa.trab1.utils;
+package tpa.trab1.tools;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @author Professor Victorio Carvalho
  */
 public class GeradorArquivosBalanceados {
-    private static final int NUM_REGISTROS = 50000000; // Quantidade de registros a serem gerados
+    private static final int NUM_REGISTROS = 3000000; // Quantidade de registros a serem gerados
     private static final String NOME_ARQUIVO = "entrada" + NUM_REGISTROS + ".txt";
 
     private static final String[] PRENOMES = {
@@ -43,7 +43,14 @@ public class GeradorArquivosBalanceados {
     };
 
     public static void main(String[] args) {
-        gerarArquivo();
+        try {
+            gerarArquivo();
+        } catch (OutOfMemoryError error) {
+            System.out.println("XXXX ERROR XXXX");
+            System.out.println("Capturamos um erro no programa");
+            System.out.println("Não foi possível alocar mais espaço para para o programa");
+            System.out.println("XXXXXXXXXXXXXXX");
+        }
     }
 
     private static void gerarArquivo() {

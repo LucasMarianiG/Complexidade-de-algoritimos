@@ -3,7 +3,6 @@ package tpa.trab1.q4;
 import tpa.trab1.q1.Aluno;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,12 +14,51 @@ public class ControllerArquivo {
     private final List<Aluno> listaEncadeada;
     private final String filename;
     private long tempoInicial = 0, tempoFinal = 0, tempoExecucao = 0;
-    private Aluno aluno = null;
+    private Aluno aluno;
 
     public ControllerArquivo(String filename) {
         this.filename = filename;
         this.listaArray = new ArrayList<>();
         this.listaEncadeada = new LinkedList<>();
+        this.aluno = new Aluno(-1, "Fulano da Silva");
+    }
+
+    public void processaArquivoParaListaArray() throws OutOfMemoryError, IOException {
+        System.out.println("\n### Iniciando a aplicação para o ArrayList...");
+        this.processaDadosArquivo(this.listaArray);
+
+        // Realizando as inserções extra na lista array
+        System.out.println("Inserções");
+        this.insereNoFinal(this.listaArray);
+        this.insereNoMeio(this.listaArray);
+        this.insereNoInicio(this.listaArray);
+
+        // Realizando as buscas na lista array
+        System.out.println("Buscas");
+        this.buscaElementoDoMeio(this.listaArray);
+        this.buscaUltimoElemento(this.listaArray);
+        this.buscaPenultimoElemento(this.listaArray);
+
+        System.out.println("... Finalizado a aplicação para o ArrayList.");
+    }
+
+    public void processaArquivoParaListaEncadeada() throws OutOfMemoryError, IOException {
+        System.out.println("\n### Iniciando a aplicação para o LinkedList...");
+        this.processaDadosArquivo(this.listaEncadeada);
+
+        // Realizando as inserções extra na lista array
+        System.out.println("Inserções");
+        this.insereNoInicio(this.listaEncadeada);
+        this.insereNoMeio(this.listaEncadeada);
+        this.insereNoFinal(this.listaEncadeada);
+
+        // Realizando as buscas na lista array
+        System.out.println("Buscas");
+        this.buscaElementoDoMeio(this.listaEncadeada);
+        this.buscaPenultimoElemento(this.listaEncadeada);
+        this.buscaUltimoElemento(this.listaEncadeada);
+
+        System.out.println("... Finalizado a aplicação para o LinkedList.");
     }
 
     private long lerTempoDoSistema() {
@@ -35,174 +73,90 @@ public class ControllerArquivo {
         return buff.readLine();
     }
 
-    private int lerQuantidadeRegistro(BufferedReader buff) throws IOException, NumberFormatException {
+    private int lerQuantidadeRegistro(BufferedReader buff) throws NumberFormatException, IOException {
         String linha = this.lerLinha(buff);
         return Integer.parseInt(linha);
     }
 
-    public void carregaListaArray() throws OutOfMemoryError {
-        try {
-            System.out.println("### Iniciando a leitura do arquivo e salvando os dados num ArrayList...");
+    private void processaDadosArquivo(List<Aluno> lista) throws IOException, OutOfMemoryError {
+        System.out.println("Iniciando a leitura do arquivo e salvando os dados na lista");
 
-            // Declarando variáveis para ler o arquivo
-            FileReader file = new FileReader(this.filename);
-            BufferedReader buff = new BufferedReader(file);
-            String linha;
-            int qtdRegistros = this.lerQuantidadeRegistro(buff);
+        // Declarando variáveis para ler o arquivo
+        FileReader file = new FileReader(this.filename);
+        BufferedReader buff = new BufferedReader(file);
+        String linha;
+        int qtdRegistros = this.lerQuantidadeRegistro(buff);
 
-            // Pegando o tempo de início
-            this.tempoInicial = this.lerTempoDoSistema();
+        System.out.println("Carregando " + qtdRegistros + " registros na lista.");
 
-            for (int i = 0; i < qtdRegistros; i++) {
-                linha = buff.readLine();
-                String[] dados = linha.split(";");
-                this.listaArray.add(new Aluno(Integer.parseInt(dados[0]), dados[1]));
-            }
+        // Pegando o tempo de início de processamento do arquivo e salvando os dados na lista
+        this.tempoInicial = this.lerTempoDoSistema();
 
-            this.tempoFinal = this.lerTempoDoSistema();
-            this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-            System.out.println("Tempo de carregamento do ArrayList em milissegundos: " + this.tempoExecucao);
-
-            buff.close();
-        } catch (FileNotFoundException error) {
-            System.out.println("Erro: Arquivo não encontrado");
-        } catch (IOException error) {
-            System.out.println("Erro: Tivemos um problema ao ler os dados do arquivo");
-        } catch (NumberFormatException error) {
-            System.out.println("Erro: Tivemos um problema ao converter uma das informações do arquivo para o valor numérico");
-        } finally {
-            System.out.println("...Finalizamos a leitura do arquivo.\n");
+        for (int i = 0; i < qtdRegistros; i++) {
+            linha = buff.readLine();
+            String[] dados = linha.split(";");
+            lista.add(new Aluno(Integer.parseInt(dados[0]), dados[1]));
         }
+
+        this.tempoFinal = this.lerTempoDoSistema();
+        this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
+        System.out.println("Tempo de carregamento do ArrayList em milissegundos: " + this.tempoExecucao);
+
+        // Fechando arquivo
+        buff.close();
     }
 
-    public void carregaListaEncadeada() throws OutOfMemoryError {
-        try {
-            System.out.println("### Iniciando a leitura do arquivo e salvando os dados num LinkedList...");
-
-            // Declarando variáveis para ler o arquivo
-            FileReader file = new FileReader(this.filename);
-            BufferedReader buff = new BufferedReader(file);
-            String linha;
-            int qtdRegistros = this.lerQuantidadeRegistro(buff);
-
-            // Pegando o tempo de início
-            this.tempoInicial = this.lerTempoDoSistema();
-
-            for (int i = 0; i < qtdRegistros; i++) {
-                linha = buff.readLine();
-                String[] dados = linha.split(";");
-                this.listaEncadeada.add(new Aluno(Integer.parseInt(dados[0]), dados[1]));
-            }
-
-            this.tempoFinal = this.lerTempoDoSistema();
-            this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-            System.out.println("Tempo de carregamento do LinkedList em milissegundos: " + this.tempoExecucao);
-
-            buff.close();
-        } catch (FileNotFoundException error) {
-            System.out.println("Erro: Arquivo não encontrado");
-        } catch (IOException error) {
-            System.out.println("Erro: Tivemos um problema ao ler os dados do arquivo");
-        } catch (NumberFormatException error) {
-            System.out.println("Erro: Tivemos um problema ao converter uma das informações do arquivo para o valor numérico");
-        } finally {
-            System.out.println("...Finalizamos a leitura do arquivo.\n");
-        }
+    private void insereNoFinal(List<Aluno> lista) {
+        // Pegando o tempo de inserção no final da lista
+        this.tempoInicial = this.lerTempoDoSistema();
+        lista.addLast(this.aluno);
+        this.tempoFinal = this.lerTempoDoSistema();
+        this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
+        System.out.println("Tempo de inserção no final da lista em milissegundos: " + this.tempoExecucao);
     }
 
-    public void insereNoFinal(Aluno a) {
-        // Pegando o tempo de inserção no ArrayList
+    private void insereNoMeio(List<Aluno> lista) {
+        // Pegando o tempo de inserção no meio da lista
         this.tempoInicial = this.lerTempoDoSistema();
-        this.listaArray.addLast(a);
+        lista.add(lista.size() / 2, this.aluno);
         this.tempoFinal = this.lerTempoDoSistema();
         this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-        System.out.println("Tempo de inserção no final da lista array em milissegundos: " + this.tempoExecucao);
-
-        // Pegando o tempo de inserção no LinkedList
-        this.tempoInicial = this.lerTempoDoSistema();
-        this.listaEncadeada.addLast(a);
-        this.tempoFinal = this.lerTempoDoSistema();
-        this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-        System.out.println("Tempo de inserção no final da lista encadeada em milissegundos: " + this.tempoExecucao + "\n");
+        System.out.println("Tempo de inserção no meio da lista em milissegundos: " + this.tempoExecucao);
     }
 
-    public void insereNoInicio(Aluno a) {
-        // Pegando o tempo de inserção no ArrayList
+    private void insereNoInicio(List<Aluno> lista) {
+        // Pegando o tempo de inserção no inicio da lista
         this.tempoInicial = this.lerTempoDoSistema();
-        this.listaArray.addFirst(a);
+        lista.addFirst(this.aluno);
         this.tempoFinal = this.lerTempoDoSistema();
         this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-        System.out.println("Tempo de inserção no início da lista array em milissegundos: " + this.tempoExecucao);
-
-        // Pegando o tempo de inserção no LinkedList
-        this.tempoInicial = this.lerTempoDoSistema();
-        this.listaEncadeada.addFirst(a);
-        this.tempoFinal = this.lerTempoDoSistema();
-        this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-        System.out.println("Tempo de inserção no início da lista encadeada em milissegundos: " + this.tempoExecucao + "\n");
+        System.out.println("Tempo de inserção no início da lista em milissegundos: " + this.tempoExecucao);
     }
 
-    public void insereNoMeio(Aluno a) {
-        // Pegando o tempo de inserção no ArrayList
+    private void buscaElementoDoMeio(List<Aluno> lista) {
+        // Pegando o tempo de busca do elemente do meio da lista
         this.tempoInicial = this.lerTempoDoSistema();
-        this.listaArray.add(this.listaArray.size() / 2, a);
+        this.aluno = lista.get(lista.size() / 2);
         this.tempoFinal = this.lerTempoDoSistema();
         this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-        System.out.println("Tempo de inserção no meio da lista array em milissegundos: " + this.tempoExecucao);
-
-        // Pegando o tempo de inserção no LinkedList
-        this.tempoInicial = this.lerTempoDoSistema();
-        this.listaEncadeada.add(this.listaEncadeada.size() / 2, a);
-        this.tempoFinal = this.lerTempoDoSistema();
-        this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-        System.out.println("Tempo de inserção no meio da lista encadeada em milissegundos: " + this.tempoExecucao + "\n");
+        System.out.println("Tempo de busca do elemento do meio da lista em milissegundos: " + this.tempoExecucao);
     }
 
-    public void buscaUltimoElemento() {
-        // Pegando o tempo de busca no ArrayList
+    private void buscaUltimoElemento(List<Aluno> lista) {
+        // Pegando o tempo de busca do último elemento da lista
         this.tempoInicial = this.lerTempoDoSistema();
-        this.aluno = this.listaArray.getLast();
+        this.aluno = lista.getLast();
         this.tempoFinal = this.lerTempoDoSistema();
         this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-        System.out.println("Tempo de busca do último elemento da lista array em milissegundos: " + this.tempoExecucao);
-
-        // Pegando o tempo de busca no LinkedList
-        this.tempoInicial = this.lerTempoDoSistema();
-        this.aluno = this.listaEncadeada.getLast();
-        this.tempoFinal = this.lerTempoDoSistema();
-        this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-        System.out.println("Tempo de busca do último elemento da lista encadeada em milissegundos: " + this.tempoExecucao + "\n");
+        System.out.println("Tempo de busca do último elemento da lista em milissegundos: " + this.tempoExecucao);
     }
 
-    public void buscaPenultimoElemento() {
-        // Pegando o tempo de busca no ArrayList
+    private void buscaPenultimoElemento(List<Aluno> lista) {
+        // Pegando o tempo de busca do penúltimo elemente da lista
         this.tempoInicial = this.lerTempoDoSistema();
-        this.aluno = this.listaArray.get(this.listaArray.size() - 2);
+        this.aluno = lista.get(lista.size() - 2);
         this.tempoFinal = this.lerTempoDoSistema();
         this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-        System.out.println("Tempo de busca do penúltimo elemento da lista array em milissegundos: " + this.tempoExecucao);
-
-        // Pegando o tempo de busca no LinkedList
-        this.tempoInicial = this.lerTempoDoSistema();
-        this.aluno = this.listaEncadeada.get(this.listaEncadeada.size() - 2);
-        this.tempoFinal = this.lerTempoDoSistema();
-        this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-        System.out.println("Tempo de busca do penúltimo elemento da lista encadeada em milissegundos: " + this.tempoExecucao + "\n");
-    }
-
-    public void buscaElementoDoMeio() {
-        // Pegando o tempo de busca no ArrayList
-        this.tempoInicial = this.lerTempoDoSistema();
-        this.aluno = this.listaArray.get(this.listaArray.size() / 2);
-        this.tempoFinal = this.lerTempoDoSistema();
-        this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-        System.out.println("Tempo de busca do elemento do meio da lista array em milissegundos: " + this.tempoExecucao);
-
-        // Pegando o tempo de busca no LinkedList
-        this.tempoInicial = this.lerTempoDoSistema();
-        this.aluno = this.listaEncadeada.get(this.listaEncadeada.size() / 2);
-        this.tempoFinal = this.lerTempoDoSistema();
-        this.tempoExecucao = this.calcularTempoExecusaoEmSegundos();
-        System.out.println("Tempo de busca do elemento do meio da lista encadeada em milissegundos: " + this.tempoExecucao + "\n");
+        System.out.println("Tempo de busca do penúltimo elemento da lista em milissegundos: " + this.tempoExecucao);
     }
 }
