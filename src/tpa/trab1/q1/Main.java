@@ -10,11 +10,13 @@ public class Main {
 
         System.out.println();
         while(opcao != 0) {
-            System.out.println("Escolha uma opção");
+            System.out.println("---------------------------------Escolha uma opção-------------------------------------");
             System.out.println("1: Inserir");
             System.out.println("2: Remover");
             System.out.println("3: Pesquisar");
             System.out.println("0: Sair");
+            System.out.println("---------------------------------------------------------------------------------------");
+            System.out.print("Digite: ");
             opcao = sc.nextInt();
 
             sc.nextLine();
