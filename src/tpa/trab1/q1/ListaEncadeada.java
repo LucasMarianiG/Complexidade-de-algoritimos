@@ -123,7 +123,7 @@ public class ListaEncadeada<T> {
         while (aux != null) {
             s += aux.getValor();
             if (aux != this.ult)
-                s+= ",";
+                s+= ", ";
             aux = aux.getProx();
 
         }
